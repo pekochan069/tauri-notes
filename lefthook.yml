@@ -1,0 +1,56 @@
+pre-commit:
+  jobs:
+    - name: format-js
+      run: bun prettier --write {staged_files}
+      glob: "*.{js,ts,jsx,tsx,css,json,yml}"
+    - name: lint-js
+      run: bun oxlint {staged_files}
+      glob: "*.{js,ts,svelte}"
+
+pre-push:
+  jobs:
+    - name: lint-js
+      run: bun oxlint {push_files}
+      glob: "*.{js,ts,svelte}"
+# EXAMPLE USAGE:
+#
+#   Refer for explanation to following link:
+#   https://lefthook.dev/configuration/
+#
+# pre-push:
+#   jobs:
+#     - name: packages audit
+#       tags:
+#         - frontend
+#         - security
+#       run: yarn audit
+#
+#     - name: gems audit
+#       tags:
+#         - backend
+#         - security
+#       run: bundle audit
+#
+# pre-commit:
+#   parallel: true
+#   jobs:
+#     - run: yarn eslint {staged_files}
+#       glob: "*.{js,ts,jsx,tsx}"
+#
+#     - name: rubocop
+#       glob: "*.rb"
+#       exclude:
+#         - config/application.rb
+#         - config/routes.rb
+#       run: bundle exec rubocop --force-exclusion {all_files}
+#
+#     - name: govet
+#       files: git ls-files -m
+#       glob: "*.go"
+#       run: go vet {files}
+#
+#     - script: "hello.js"
+#       runner: node
+#
+#     - script: "hello.go"
+#       runner: go run
